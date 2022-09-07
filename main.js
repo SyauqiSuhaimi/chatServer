@@ -14,7 +14,7 @@ const io = new Server(server, {
 const memberList = []
 
 io.on('connection', (socket) => {
-    console.log(`user ${socket.id} is connected.`)
+    console.log(`user ${socket.id} is connected.`)  
 
     socket.on('message', data =>{
         socket.broadcast.emit('message:received', data)
@@ -22,13 +22,28 @@ io.on('connection', (socket) => {
 
     socket.on('members', data =>{
 
-        memberList.push(data)
-        socket.broadcast.emit('members:new', memberList)
+        const  newMember = {
+            id : socket.id,
+            memberName : data
+        }
+        
+        memberList.push(newMember)
         console.log(memberList)
+        socket.broadcast.emit('members:new', memberList)
+        
     })
 
     socket.on('disconnect', () => {
+
+        var index = memberList.map(x => {
+            return x.id;
+          }).indexOf(socket.id);
+
+          memberList.splice(index, 1);
+          socket.broadcast.emit('members:new', memberList)
         console.log(`user ${socket.id} disconnect.`)
+
+        console.log(memberList)
     })
 })
 
