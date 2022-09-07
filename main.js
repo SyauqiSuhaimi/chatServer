@@ -29,7 +29,7 @@ io.on('connection', (socket) => {
         
         memberList.push(newMember)
         console.log(memberList)
-        socket.broadcast.emit('members:new', memberList)
+        socket.broadcast.emit('updateMembers', memberList)
         
     })
 
@@ -40,7 +40,7 @@ io.on('connection', (socket) => {
           }).indexOf(socket.id);
 
           memberList.splice(index, 1);
-          socket.broadcast.emit('members:new', memberList)
+          socket.broadcast.emit('updateMembers', memberList)
         console.log(`user ${socket.id} disconnect.`)
 
         console.log(memberList)
