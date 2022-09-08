@@ -17,6 +17,7 @@ io.on('connection', (socket) => {
     console.log(`user ${socket.id} is connected.`)
 
     socket.on('message', data =>{
+        console.log("tekan")
         socket.broadcast.emit('message:received', data)
     })
 
@@ -29,7 +30,7 @@ io.on('connection', (socket) => {
         
         memberList.push(newMember)
         console.log(memberList)
-        socket.broadcast.emit('updateMembers', memberList)
+        io.emit('updateMembers', memberList)
         
     })
 
